@@ -1,0 +1,97 @@
+JOBS: 12
+TEST_ONLY: true
+LOG_INTERVAL: 10
+TRAIN_BATCH_SIZE: 1
+VAL_BATCH_SIZE: 1
+START_EPOCH: 0
+END_EPOCH: 50
+VAL_INTERVAL: 1
+MODEL_SANING_INTERVAL: 1
+MIX_PRECISION: true
+RESUME:
+  PATH: null
+  TYPE: null
+  SET_EPOCH: true
+LAUNCHER: ParallelLaunch
+SEED: 9527
+IS_CUDA: true
+OPTIMIZER:
+  NAME: Adam
+  LR: 0.0001
+  LR_SCHEDULER: cosine
+  end_epoch: 50
+LOSS:
+  - NAME: vfi_sr-loss-w_input_frames
+    WEIGHT: 1
+METRICS:
+  - NAME: vfi_sr-PSNR-w_input_frames-gray
+  - NAME: vfi_sr-PSNR-w_input_frames
+  - NAME: vfi_sr-SSIM-w_input_frames-gray
+  - NAME: vfi_sr-SSIM-w_input_frames
+DATASET:
+  NAME: adobe240fps_stsr
+  is_test_and_visualize: true
+  only_select_middle_frame: true
+  has_events: true
+  has_pyramid_representation: true
+  is_lmdb: true
+  root: ./dataset/1-Adobe240Fps/
+  train_step: 9
+  test_step: 8
+  input_frames: 4
+  skip_frames: 7
+  moments: 128
+  pyramid_level: 7
+  pyramid_moments: 2
+  random_selection_count: 3
+  deta_t_normal: 0.2
+  pyramid_reduction_factor: 2
+  is_random_cropping: true
+  is_random_selection: false
+  input_resolution:
+    - 128
+    - 128
+  fixed_up_scale: 4
+  crop_size_low_bound: 512
+  crop_size_up_bound: 512
+  is_center_interpolation: true
+MODEL:
+  NAME: stsr
+  image_channel: 3
+  input_frames: 2
+  output_frames: 3
+  events_global_moments: 128
+  encoder_name: femse_v2
+  encoder_config:
+    size: small
+    moments: 128
+    final_inr_dim: 672
+  inr_temporal_in_channel: 672
+  inr_temporal_out_channel: 64
+  global_inr_and_etpr_fusion_type: add
+  decoder_name: large_temporal_spatial_embedding
+  decoder_config:
+    temporal_embedding_type: mul
+    spatial_embedding_type: "bicubic_spatial_decoder"
+    spatial_embedding_config:
+  epr_encoder_name: swin
+  epr_encoder_config:
+    pyramid_level: 7
+    pyramid_moments: 2
+    epre_channel: 56
+    epr_out_channel: 672
+  low_resolution:
+    - 128
+    - 128
+  low_frame_rate: 120
+  gt_resolution:
+    - 512
+    - 512
+  high_frame_rate: 240
+  intermediate_visualization: false
+VISUALIZATION:
+  NAME: vfi-sr-batch-vis
+  folder: ./Adobe
+  tag: 1110
+  show_etpr: true
+  intermediate_visualization: false

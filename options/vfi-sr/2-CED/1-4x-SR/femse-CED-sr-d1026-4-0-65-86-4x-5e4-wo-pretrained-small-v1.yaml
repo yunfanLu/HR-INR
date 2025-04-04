@@ -1,0 +1,78 @@
+JOBS: 12
+TEST_ONLY: false
+LOG_INTERVAL: 10
+TRAIN_BATCH_SIZE: 1
+VAL_BATCH_SIZE: 1
+START_EPOCH: 0
+END_EPOCH: 100
+VAL_INTERVAL: 1
+MODEL_SANING_INTERVAL: 1
+MIX_PRECISION: true
+RESUME:
+  PATH: null
+  TYPE: null
+  SET_EPOCH: true
+LAUNCHER: ParallelLaunch
+SEED: 9527
+IS_CUDA: true
+OPTIMIZER:
+  NAME: Adam
+  LR: 0.0005
+  LR_SCHEDULER: cosine
+  end_epoch: 100
+LOSS:
+  - NAME: vfi_sr-loss-w_input_frames
+    WEIGHT: 1
+METRICS:
+  - NAME: vfi_sr-PSNR-w_input_frames-gray
+  - NAME: vfi_sr-PSNR-w_input_frames
+  - NAME: vfi_sr-SSIM-w_input_frames-gray
+  - NAME: vfi_sr-SSIM-w_input_frames
+DATASET:
+  NAME: ced-sr
+  ced_root: dataset/8-CED-dataset/
+  in_frame: 4
+  future_frame: 1
+  past_frame: 1
+  scale: 4
+  moments: 128
+  pyramid_level: 7
+  pyramid_moments: 2
+  pyramid_reduction_factor: 3
+MODEL:
+  NAME: stsr
+  image_channel: 3
+  input_frames: 2
+  output_frames: 3
+  events_global_moments: 128
+  encoder_name: femse_v2
+  encoder_config:
+    size: small
+    moments: 128
+  inr_temporal_in_channel: 768
+  inr_temporal_out_channel: 64
+  global_inr_and_etpr_fusion_type: concat
+  decoder_name: large_temporal_spatial_embedding
+  decoder_config:
+    temporal_embedding_type: mul
+    spatial_embedding_type: "bicubic_spatial_decoder"
+    spatial_embedding_config:
+  epr_encoder_name: swin
+  epr_encoder_config:
+    pyramid_level: 7
+    pyramid_moments: 2
+    epre_channel: 56
+    epr_out_channel: 96
+  low_resolution:
+    - 65
+    - 86
+  low_frame_rate: 24
+  gt_resolution:
+    - 260
+    - 346
+  high_frame_rate: 24
+  intermediate_visualization: false
+VISUALIZATION:
+  folder: ./dataset/2-240fps-Videos/1-Adobe240Fps/OriginalVideo/frame/
+  tag: 0821
+  intermediate_visualization: false

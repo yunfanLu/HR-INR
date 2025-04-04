@@ -1,0 +1,88 @@
+JOBS: 12
+TEST_ONLY: false
+LOG_INTERVAL: 10
+TRAIN_BATCH_SIZE: 1
+VAL_BATCH_SIZE: 1
+START_EPOCH: 0
+END_EPOCH: 50
+VAL_INTERVAL: 1
+MODEL_SANING_INTERVAL: 5
+MIX_PRECISION: true
+RESUME:
+  PATH: null
+  TYPE: null
+  SET_EPOCH: true
+LAUNCHER: ParallelLaunch
+SEED: 9527
+IS_CUDA: true
+OPTIMIZER:
+  NAME: Adam
+  LR: 0.0001
+  LR_SCHEDULER: cosine
+  end_epoch: 50
+LOSS:
+  - NAME: vfi_sr-loss-w_input_frames
+    WEIGHT: 1
+METRICS:
+  - NAME: vfi_sr-PSNR-w_input_frames-gray
+  - NAME: vfi_sr-PSNR-w_input_frames
+  - NAME: vfi_sr-SSIM-w_input_frames-gray
+  - NAME: vfi_sr-SSIM-w_input_frames
+DATASET:
+  NAME: timelens++_vfi_sr
+  timelens_pp_root: ./dataset/3-TimeLens++/
+  key_frames: 4
+  skip_frames: 7
+  step: 4
+  moments: 32
+  low_resolution:
+    - 128
+    - 128
+  is_random_cropping: true
+  random_crop_resolution:
+    - 128
+    - 128
+  is_random_selection: true
+  random_selection_count: 12
+  deta_t_normal: 0.2
+  pyramid_level: 4
+  pyramid_moments: 2
+  pyramid_reduction_factor: 3
+MODEL:
+  NAME: stsr
+  image_channel: 3
+  input_frames: 2
+  output_frames: 3
+  events_global_moments: 32
+  encoder_name: rstt
+  encoder_config:
+    only_train_adapter: false
+    rstt_type: "large"
+    event_adatper_config:
+      hidden_channels: 128
+      loop: 5
+  inr_temporal_in_channel: 672
+  inr_temporal_out_channel: 64
+  decoder_name: large_temporal_spatial_embedding
+  decoder_config:
+    temporal_embedding_type: mul
+    spatial_embedding_type: "none_spatial_decoder"
+    spatial_embedding_config:
+  epr_encoder_name: 3xconv
+  epr_encoder_config:
+    pyramid_level: 4
+    pyramid_moments: 2
+    epre_channel: 128
+  low_resolution:
+    - 128
+    - 128
+  low_frame_rate: 120
+  gt_resolution:
+    - 128
+    - 128
+  high_frame_rate: 240
+  intermediate_visualization: false
+VISUALIZATION:
+  folder: ./adobe240fps
+  tag: 0821
+  intermediate_visualization: false

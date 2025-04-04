@@ -1,0 +1,67 @@
+JOBS: 12
+TEST_ONLY: False
+LOG_INTERVAL: 10
+TRAIN_BATCH_SIZE: 1
+VAL_BATCH_SIZE: 1
+START_EPOCH: 0
+END_EPOCH: 500
+VAL_INTERVAL: 1
+MODEL_SANING_INTERVAL: 5
+MIX_PRECISION: true
+RESUME:
+  PATH:
+  TYPE:
+  SET_EPOCH: true
+LAUNCHER: "ParallelLaunch"
+SEED: 9527
+IS_CUDA: true
+OPTIMIZER:
+  NAME: "Adam"
+  LR: 0.0001
+  LR_SCHEDULER: cosine
+  end_epoch: 500
+LOSS:
+  - NAME: vfi_sr-loss-w_input_frames
+    WEIGHT: 1
+METRICS:
+  - NAME: vfi_sr-PSNR-wo_input_frames
+  - NAME: vfi_sr-PSNR-w_input_frames
+  - NAME: vfi_sr-SSIM-wo_input_frames
+  - NAME: vfi_sr-SSIM-w_input_frames
+DATASET:
+  NAME: adobe240fps_stsr
+  root: ./dataset/2-240fps-Videos/1-Adobe240Fps/OriginalVideo/frame/
+  step: 3
+  skip_frames: 6
+  moments: 7
+  is_random_cropping: true
+  is_random_selection: true
+  input_resolution:
+    - 256
+    - 256
+MODEL:
+  NAME: stsr
+  image_channel: 3
+  coords_dim: 3
+  input_frames: 2
+  output_frames: 3
+  events_global_moments: 7
+  encoder_name: esl_backbone
+  inr_in_channel: 52
+  decoder_name: conv1x1_learn_position_encoding
+  decoder_hidden_channel: 128
+  temporal_tree_encoder_name: none
+  low_resolution:
+    - 256
+    - 256
+  low_frame_rate: 30
+  gt_resolution:
+    - 512
+    - 768
+  high_frame_rate: 240
+  intermediate_visualization: false
+  has_temporal_tree_path_branch: false
+VISUALIZATION:
+  folder: ./adobe240fps
+  tag: 0821
+  intermediate_visualization: false
