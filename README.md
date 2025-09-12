@@ -10,6 +10,9 @@ The main contributions of this work are:
 - **Feature Extraction Process**: Combines holistic and regional features to efficiently manage motion dependencies in video frames.
 - **Spatiotemporal Decoding**: Utilizes INR to avoid traditional optical flow methods and ensures stable frame interpolation through temporal-spatial embedding.
 
+## News
+This project supports the rapid capture of badminton motion, [github.com/3123738092/badminton](https://github.com/3123738092/badminton), and is funded by the Xprogram project for undergraduate students at the Hong Kong University of Science and Technology Guangzhou.
+
 ## Method Overview
 
 ![](images/1-method.png)
