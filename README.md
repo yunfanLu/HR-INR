@@ -1,3 +1,5 @@
+
+
 # Event-guided Continuous Space-Time Video Super-Resolution (C-STVSR)
 
 This repository contains the implementation of our paper **"Event-guided Continuous Space-Time Video Super-Resolution (C-STVSR)"**, which introduces the first event-guided C-STVSR method. This method combines event-based temporal pyramid representation and implicit neural representation (INR) for high-performance video frame interpolation and super-resolution tasks.
@@ -12,6 +14,8 @@ The main contributions of this work are:
 
 ## News
 This project supports the rapid capture of badminton motion, [github.com/3123738092/badminton](https://github.com/3123738092/badminton), and is funded by the Xprogram project for undergraduate students at the Hong Kong University of Science and Technology Guangzhou.
+
+Please configure your local dataset paths in `config.py` before running any scripts.
 
 ## Method Overview
 
